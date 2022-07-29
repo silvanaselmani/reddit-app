@@ -1,0 +1,22 @@
+.post-image-container {
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 600px;
+}
+
+.post-image-container .post-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.rows {
+  max-width: 700px;
+  background-color: rgba(106, 42, 141, 0.428);
+}
