@@ -1,7 +1,7 @@
 .post-image-container {
-  max-width: 100%;
+  max-width: 700px;
   overflow: hidden;
-  max-height: 600px;
+  max-height: 800px;
 }
 
 .post-image-container .post-image {
@@ -18,5 +18,101 @@
 
 .rows {
   max-width: 700px;
-  background-color: rgba(106, 42, 141, 0.428);
+  background-color: #00000026;
+}
+
+.link-subreddit {
+  font-weight: 700 !important;
+  color: #f27457 !important;
+}
+
+.link-subreddit:hover {
+  text-decoration: underline;
+}
+
+.links {
+  font-weight: 500 !important;
+  color: blueviolet !important;
+}
+
+.links:hover {
+  text-decoration: underline;
+}
+
+.author {
+  font-size: 14px;
+  font-weight: 500;
+  color: #253659 !important;
+}
+
+.markdown a {
+  color: blueviolet;
+  text-decoration: underline !important;
+}
+
+.markdown a:hover {
+  color: blueviolet;
+  text-decoration: underline !important;
+}
+
+.btn-comments {
+  background-color: #253659 !important;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.btn-comments:hover {
+  color: aqua;
+  border-color: aqua;
+}
+
+.btn-comments:focus {
+  color: aqua;
+  border-color: aqua;
+}
+
+.num-comments {
+  color: aqua;
+}
+.link-small {
+  font-weight: 700 !important;
+
+  color: white !important;
+  background-color: #ff4500;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.link-small:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 480px) {
+  .rows {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+  }
+
+  .container-post {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+
+  .card-body {
+    padding: 8px !important;
+  }
+}
+
+@media only screen and (max-width: 766px) {
+  .posted {
+    margin-bottom: 10px !important;
+  }
+
+  .div-posted {
+    margin-top: -10px !important;
+  }
 }

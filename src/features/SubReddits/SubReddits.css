@@ -1,18 +1,16 @@
 .btn-orange {
-  background-color: rgba(106, 42, 141, 0.428);
+  background-color: #253659 !important;
   font-weight: 600;
-  border-color: rgba(106, 42, 141, 0.428);
-  border-width: 1px;
+
   color: white;
 }
 
 .btn-orange:hover {
-  background-color: rgba(106, 42, 141, 0.428);
-  color: white;
+  color: #f27457;
 }
 
 .btn-orange:focus {
-  color: aqua;
+  color: #f27457;
 }
 
 a {
@@ -21,8 +19,9 @@ a {
 }
 
 .dropdown-menu {
-  background-color: #f3f7f9;
-  margin-left: 10px;
+  background-color: white;
+  color: black;
+  margin-left: -100px;
 }
 
 .dropdown-item {
@@ -30,15 +29,21 @@ a {
   border-radius: 7px;
   width: 180px;
   font-weight: 500;
-  color: rgb(13, 12, 12);
-  background-color: #e7eff3;
+  color: black;
+  background-color: white;
+  border-color: black;
 }
 
 .dropdown-item:hover {
   font-weight: 600;
   font-size: 17px;
-  border: rgb(0, 89, 255) 2px solid !important;
+  border: #253659 2px solid !important;
   border-radius: 5px;
-  background-color: #61b1e7;
-  color: rgb(9, 11, 11);
+  background-color: #253659;
+  color: white;
+}
+@media only screen and (max-width: 770px) {
+  .dropdown-menu {
+    margin-left: -150px !important;
+  }
 }

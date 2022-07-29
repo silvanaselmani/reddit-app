@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectPosts,
-  selectIsLoading,
-  selectHasError,
-  loadPosts,
-} from "./PostsSlice";
+import { selectPosts, selectIsLoading, loadPosts } from "./PostsSlice";
 import { Link, useParams } from "react-router-dom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./Posts.css";
+import { formatTimestamp } from "../../helpers/helpers";
+import ReactMarkdown from "react-markdown";
+
+import { loadComments } from "../Comments/CommentSlice";
+import { FaComments } from "react-icons/fa";
 
 function Posts() {
   const posts = useSelector(selectPosts);
-  console.log(posts);
+  const isLoading = useSelector(selectIsLoading);
+
   const dispatch = useDispatch();
 
   const { name } = useParams();
@@ -22,81 +25,236 @@ function Posts() {
     //console.log(posts);
   }, [dispatch, name]);
 
-  return (
-    <div className="container">
-      {posts.map((post, id) => {
-        return (
-          <div
-            className="row rows mx-auto px-3 py-2 border-top rounded my-4"
-            key={id}
-          >
-            <div className="col mt-4">
-              <div className="card mb-3">
-                <div className="card-body">
-                  <h4 className="card-title">{post.title}</h4>
+  const carrusel = posts.map((post) => {
+    if (post.media_metadata) {
+      return post.media_metadata;
+    }
+  });
 
-                  <div className="post-image-container mt-3 d-flex justify-content-center ">
-                    {post.secure_media && post.secure_media.reddit_video && (
-                      <video controls className="post-video">
-                        <source
-                          src={post.media.reddit_video.fallback_url}
-                          type="video/webm"
-                        />
-                        Sorry, your browser doesn't support embedded videos.
-                      </video>
+  let values = [];
+
+  const carruselValues = carrusel.map((post) => {
+    if (post) {
+      values = Object.values(post);
+      return values;
+    }
+  });
+
+  return (
+    <SkeletonTheme baseColor="" highlightColor="#00000026">
+      <div className="container container-post">
+        {posts.map((post, id) => {
+          return (
+            <div
+              className="row rows mx-auto px-3 py-2 border-top rounded my-4"
+              key={id}
+            >
+              <div className="col mt-4">
+                <div className="card mb-3">
+                  <div className="card-body pt-2">
+                    <div className="row">
+                      {isLoading ? (
+                        <Skeleton width={100} />
+                      ) : (
+                        <div className="col mb-2">
+                          <Link to={post.subreddit} className=" link-subreddit">
+                            <small className="text-muted link-small">
+                              {post.subreddit}
+                            </small>
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                    <h4 className="card-title mt-2">
+                      {!isLoading ? (
+                        <ReactMarkdown className="">{post.title}</ReactMarkdown>
+                      ) : (
+                        <Skeleton height={40} className="pb-0" />
+                      )}
+                    </h4>
+
+                    {isLoading ? (
+                      <Skeleton className="mt-0" />
+                    ) : (
+                      <ReactMarkdown className="mt-3 markdown" target="_blank">
+                        {post.selftext}
+                      </ReactMarkdown>
                     )}
 
-                    <img src={post.url} alt="" className="post-image" />
-                  </div>
-
-                  <p className="card-text">
-                    {post.secure_media && post.fallback_url}
-                  </p>
-                  <div>
-                    <p className="card-text">
-                      <small className="text-muted">
-                        Last updated 3 mins ago
-                      </small>
-                    </p>
-
-                    <p>
-                      <a
-                        className="btn btn-primary"
-                        data-toggle="collapse"
-                        href="#collapseExample"
-                        role="button"
-                        aria-expanded="false"
-                        aria-controls="collapseExample"
+                    {/* Carousel */}
+                    {!isLoading && carruselValues[id] && (
+                      <div
+                        id={id}
+                        className="carousel slide"
+                        data-ride="carousel"
                       >
-                        Link with href
-                      </a>
-                      <button
-                        className="btn btn-primary"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#collapseExample"
-                        aria-expanded="false"
-                        aria-controls="collapseExample"
-                      >
-                        Button with data-target
-                      </button>
-                    </p>
-                    <div className="collapse" id="collapseExample">
-                      <div className="card card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high
-                        life accusamus terry richardson ad squid. Nihil anim
-                        keffiyeh helvetica, craft beer labore wes anderson cred
-                        nesciunt sapiente ea proident.
+                        <div className="carousel-inner">
+                          {carruselValues[id].map((imgValue, index) => {
+                            if (index === 0) {
+                              return (
+                                <div
+                                  className="carousel-item post-image-container active"
+                                  key={imgValue.id}
+                                >
+                                  <img
+                                    className="post-image"
+                                    src={
+                                      (imgValue.status === "valid" &&
+                                        imgValue.s &&
+                                        imgValue.s.u &&
+                                        imgValue.s.u.replaceAll("amp;", "")) ||
+                                      "https://i.redd.it/124u26yg91q41.jpg"
+                                    }
+                                    alt={id}
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  className="carousel-item post-image-container"
+                                  key={imgValue.id}
+                                >
+                                  <img
+                                    className="post-image"
+                                    src={
+                                      (imgValue.status === "valid" &&
+                                        imgValue.s &&
+                                        imgValue.s.u &&
+                                        imgValue.s.u.replaceAll("amp;", "")) ||
+                                      "https://i.redd.it/124u26yg91q41.jpg"
+                                    }
+                                    alt={id}
+                                  />
+                                </div>
+                              );
+                            }
+                          })}
+                        </div>
+                        <a
+                          className="carousel-control-prev"
+                          href={`#${id}`}
+                          role="button"
+                          data-slide="prev"
+                        >
+                          <span
+                            className="carousel-control-prev-icon"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Previous</span>
+                        </a>
+                        <a
+                          className="carousel-control-next"
+                          href={`#${id}`}
+                          role="button"
+                          data-slide="next"
+                        >
+                          <span
+                            className="carousel-control-next-icon"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">Next</span>
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Video */}
+                    {!isLoading &&
+                      post.secure_media &&
+                      post.secure_media.reddit_video && (
+                        <div className="post-image-container mt-3 d-flex justify-content-center ">
+                          <video controls className="post-video">
+                            <source
+                              src={post.media.reddit_video.fallback_url}
+                              type="video/webm"
+                            />
+                            Sorry, your browser doesn't support embedded videos.
+                          </video>
+                        </div>
+                      )}
+
+                    {/* Image */}
+                    {post.url && (
+                      <div className="post-image-container mt-3 d-flex justify-content-center ">
+                        {isLoading ? (
+                          <Skeleton
+                            width={700}
+                            height={300}
+                            className=" rounded pt-0"
+                          />
+                        ) : (
+                          <img src={post.url} alt="" className="post-image" />
+                        )}
+                      </div>
+                    )}
+
+                    {isLoading ? (
+                      <Skeleton className="mt-2" />
+                    ) : (
+                      <div className="row">
+                        <div className="col mb-2">
+                          {post.url_overridden_by_dest &&
+                            !post.url_overridden_by_dest.includes("gif") &&
+                            !post.url_overridden_by_dest.includes("png") &&
+                            !post.url_overridden_by_dest.includes("jpg") &&
+                            !post.url_overridden_by_dest.includes("redd") && (
+                              <a
+                                href={post.url_overridden_by_dest}
+                                className="links"
+                              >
+                                <small className="text-muted links">
+                                  {post.url_overridden_by_dest}
+                                </small>
+                              </a>
+                            )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <div className="d-flex justify-content-between mt-2 flex-wrap-reverse div-posted">
+                        <Link to="/comments">
+                          <button
+                            className="btn btn-primary btn-comments"
+                            type="button"
+                            data-toggle=""
+                            data-target={`#${post.id}`}
+                            aria-expanded="false"
+                            aria-controls="collapseExample"
+                            onClick={() => {
+                              dispatch(loadComments(post.permalink));
+                              window.scrollTo(0, 0);
+                            }}
+                          >
+                            <span className="num-comments">
+                              <FaComments />{" "}
+                            </span>{" "}
+                            {!isLoading && post.num_comments} Comments
+                          </button>
+                        </Link>
+                        {isLoading ? (
+                          <Skeleton className="mt-2" width={280} />
+                        ) : (
+                          <p className="card-text mt-2 d-inline mr-2 posted">
+                            <small className="text-muted">
+                              {`Posted by `}{" "}
+                              <span className="author" href="">
+                                {post.author}
+                              </span>{" "}
+                              {`${formatTimestamp(post.created)}`}
+                            </small>
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </SkeletonTheme>
   );
 }
 

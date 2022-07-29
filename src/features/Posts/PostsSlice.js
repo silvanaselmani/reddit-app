@@ -3,7 +3,15 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const loadPosts = createAsyncThunk(
   "posts/loadPosts",
   async (arg = "popular") => {
-    const response = await fetch(`https://www.reddit.com/r/${arg}.json`);
+    let endpoint = "";
+    if (arg === "new" || arg === "top" || arg === "rising") {
+      endpoint = `https://www.reddit.com/r/popular/${arg}.json`;
+    } else if (arg.includes("=")) {
+      endpoint = `https://www.reddit.com//search.json?q${arg}`;
+    } else {
+      endpoint = `https://www.reddit.com/r/${arg}.json`;
+    }
+    const response = await fetch(endpoint);
     const json = await response.json();
     return json.data.children.map((post) => post.data);
   }
@@ -22,17 +30,17 @@ export const postsSlice = createSlice({
       .addCase(loadPosts.pending, (state) => {
         state.isLoading = true;
         state.hasError = false;
-        console.log("pending");
+        //console.log("pending");
       })
       .addCase(loadPosts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.posts = action.payload;
-        console.log("fulfilled");
+        //console.log("fulfilled");
       })
       .addCase(loadPosts.rejected, (state) => {
         state.isLoading = false;
         state.hasError = true;
-        console.log("rejected");
+        //console.log("rejected");
       });
   },
 });

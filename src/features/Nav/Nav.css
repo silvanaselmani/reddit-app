@@ -1,26 +1,37 @@
 .buttons {
-  color: white;
+  color: black;
   font-weight: 600;
   font-size: 18px;
   opacity: 1;
   border-radius: 45%;
   border-width: 2px;
+
+  background-color: white;
+  width: 100px;
+  margin-top: 3px;
+  border: black 2px solid;
+  border-top: transparent;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
 }
 
 .buttons:focus {
-  background-color: #5499e7;
-  color: rgb(48, 53, 53);
+  background-color: #83b4ed;
+  color: aqua !important;
   font-weight: 600;
   border-color: #0d6efd;
 }
 
 .buttons:hover {
   color: rgb(18, 28, 27);
-  background-color: #0d6efd;
+  background-color: #0487bf;
   border-color: #0d6efd;
   font-weight: 700;
 }
 
 .colum {
-  background-color: #0db5fd;
+  background-color: #253659;
+  height: 7px;
+  margin-top: 30px;
+  margin-bottom: 60px;
 }

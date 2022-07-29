@@ -1,0 +1,27 @@
+@media only screen and (max-width: 768px) {
+  .sub-comments {
+    max-width: 400px !important;
+  }
+}
+
+@media only screen and (max-width: 568px) {
+  .sub-comments {
+    max-width: 350px !important;
+  }
+}
+
+@media only screen and (max-width: 458px) {
+  .sub-comments {
+    max-width: 320px !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .sub-comments {
+    max-width: 300px !important;
+  }
+}
+
+.sub-comments {
+  max-width: 500px;
+}

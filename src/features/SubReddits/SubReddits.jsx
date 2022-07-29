@@ -2,22 +2,15 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  selectSubReddits,
-  selectIsLoading,
-  // selectHasError,
-  loadSubReddits,
-} from "./SubRedditsSlice";
+import { selectSubReddits, loadSubReddits } from "./SubRedditsSlice";
 
 //CSS
-import { Spinner } from "reactstrap";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./SubReddits.css";
 
 const SubReddits = () => {
   const subReddits = useSelector(selectSubReddits);
-  const isLoading = useSelector(selectIsLoading);
-  // const hasError = useSelector(selectHasError);
 
   const dispatch = useDispatch();
 
@@ -25,15 +18,15 @@ const SubReddits = () => {
     dispatch(loadSubReddits());
   }, [dispatch]);
 
+  const onClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="btn-group pl-5 ">
-      <Link className="" to="/popular">
-        <button type="button" className="btn color-white btn-orange">
-          {isLoading ? (
-            <Spinner color="white" type="grow" size="sm" />
-          ) : (
-            "SubReddits"
-          )}
+    <div className="btn-group btn-subreddit">
+      <Link className="d-none d-md-inline" to="/popular">
+        <button type="button" className="btn btn-orange" onClick={onClick}>
+          Popular
         </button>
       </Link>
 
