@@ -2,7 +2,7 @@
 
 This is training project for Codecademy course (Full-stach engineer). The goal of this project: create app where you can read through reddit posts and comments, filter and search them.
 
-[Live Reddit App](https://reddit-fun.netlify.app)
+[Live Reddit App](https://reddit-app1.netlify.app/)
 
 In the project directory, you can run:
 
